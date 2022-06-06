@@ -9,7 +9,8 @@ import re
 def ng_conf_gen(submitted):
 
     try:
-        file = open ("/data/users/appuser/wso2urls.conf",'r')
+        #file = open ("/data/users/appuser/wso2urls.conf",'r')
+        file = open ("wso2rules.conf", 'r')
         source_file_content = file.read()
         rule_content = re.search(r"\n#cc_start((.|\n)*)\n#cc_end",source_file_content)    
         
@@ -22,12 +23,13 @@ def ng_conf_gen(submitted):
         "server {\n\n" + \
         "#cc_start\n" +\
         rule_content.group(1) +"\n\n" +\
-        "\t\tlocaion = " +  submitted['exposed_url'] + "\n" +\
-        "\t\t{\n" +\
-        "\t\t\t" + "rewrite ^" + submitted['exposed_url'] + "?$" + " " +submitted["original_url"] + " " + submitted["flag"] + ";\n" +\
-        "\t\t}" + "\n\n" +\
-        "#cc_end"
+        "\tlocation = " +  submitted['exposed_url'] + "\n" +\
+        "\t{\n" +\
+        "\t\t" + "rewrite ^" + submitted['exposed_url'] + "?$" + " " +submitted["original_url"] + " " + submitted["flag"] + ";\n" +\
+        "\t}" + "\n\n" +\
+        "#cc_end\n"+\
         "}"
+        
         try:
             des_file = open("amirtest.txt",'w')
             des_file.write(final_string)
@@ -38,7 +40,7 @@ def ng_conf_gen(submitted):
             return "Destination file openning error!"
             file.close()
     else:
-        return "No regex match in source file. Wrong file or wrong file sructure." 
+        return "No regex match in source file. Wrong file or wrong file structure." 
         file.close()
         des_file.close()
                    
