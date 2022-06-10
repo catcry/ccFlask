@@ -2,8 +2,8 @@ limit_req_zone $binary_remote_addr zone=ccrules:500m rate=100r/s;
 
 server {
 
-
 #cc_start
+
     listen 8243 ssl;
     server_name apigw-edge2.unix.mci.ir;
     #proxy_set_header X-Forwarded-Port 443;
@@ -37,11 +37,40 @@ server {
     access_log /etc/opt/rh/rh-nginx18/nginx/conf.d/log/gw/https/access.log;
     error_log /etc/opt/rh/rh-nginx18/nginx/conf.d/log/gw/https/error.log;
 	
-    #cc_end  
-    location = /andalib 
-    {
-      rewrite ^/andalib?$ /ccTest/v1/ last;
-      }
-      
+    
 
+
+#cc_end
+
+#ccRewriteRules_start
+
+	location = /catcry/v0
+	{
+		rewrite ^/ccTest4/v10?$ /catcry/v0 last;
+	}
+
+	location = /andalib
+	{
+		rewrite ^/amir?$ /andalib last;
+	}
+
+	location = /catcry
+	{
+		rewrite ^/ccTest/v2?$ /catcry flag;
+	}
+
+	location = /catcry
+	{
+		rewrite ^/ccTest/v2?$ /catcry flag;
+	}
+
+	location = /b
+	{
+		rewrite ^/a?$ /b l;
+	}
+
+	location = /mely/v1
+	{
+		rewrite ^/memela?$ /mely/v1 last;
+	}ccRewriteRules_end
 }
