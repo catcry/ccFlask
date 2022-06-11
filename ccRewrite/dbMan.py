@@ -20,10 +20,13 @@ def wrt2db(submitted):
      #   print(row)
 
     #sql = "select * from REWRT_RULES where rule_id = :rid"
-    
-    c.execute(sql,original_url=submitted['original_url'], \
+    try:
+        
+        c.execute(sql,original_url=submitted['original_url'], \
                   exposed_url=submitted['exposed_url'],\
                   flag=submitted['flag'])
+    except:
+        return "Database insert Error. Check the rule"
     conn.commit()
     c.close()
     conn.close()

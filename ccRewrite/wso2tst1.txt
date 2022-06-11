@@ -1,0 +1,67 @@
+limit_req_zone $binary_remote_addr zone=ccrules:500m rate=100r/s;
+
+server {
+
+#cc_start
+
+    listen 8243 ssl;
+    server_name apigw-edge2.unix.mci.ir;
+    #proxy_set_header X-Forwarded-Port 443;
+    ssl_certificate /etc/opt/rh/rh-nginx18/nginx/conf.d/ssl/nginx-gwam.crt;
+    ssl_certificate_key /etc/opt/rh/rh-nginx18/nginx/conf.d/ssl/nginx-gwam.key;
+    
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+            root /etc/opt/rh/rh-nginx18/nginx/conf.d/err;
+            internal;
+    }
+
+    error_page 500 502 503 504 /custom_50x.html;
+    location = /custom_50x.html {
+            root /etc/opt/rh/rh-nginx18/nginx/conf.d/err;
+            internal;
+    }
+    
+    
+    location / {
+            limit_req zone=ccrules;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_read_timeout 5m;
+            proxy_send_timeout 5m;
+            proxy_pass https://sslgw.apigw-edge2.unix.mci.ir;
+        }
+
+    access_log /etc/opt/rh/rh-nginx18/nginx/conf.d/log/gw/https/access.log;
+    error_log /etc/opt/rh/rh-nginx18/nginx/conf.d/log/gw/https/error.log;
+	
+    
+
+
+#cc_end
+
+#ccRewriteRules_start
+
+	location = /b
+	{
+		rewrite ^/a?$ /b last;
+	}
+
+	location = /e
+	{
+		rewrite ^/d?$ /e last;
+	}
+
+	location = /y
+	{
+		rewrite ^/h?$ /y last;
+	}
+
+	location = local
+	{
+		rewrite ^/test/v1/?$ local lsty;
+	}
+#ccRewriteRules_end
+}

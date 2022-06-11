@@ -21,7 +21,7 @@ def home():
 #<td>Creation Date</td>
 
 
- 
+  
 @app.route('/rewrite', methods=['POST'])
 def loc_post():
     submitted = request.form
